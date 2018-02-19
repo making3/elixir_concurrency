@@ -15,4 +15,8 @@ defmodule RepeaterTest do
   test "number converts to string" do
     assert Repeater.repeat(123) == "Repeating 123"
   end
+
+  test "0 converts to zero" do
+    assert Repeater.repeat(0) == "Repeating zero"
+  end
 end
