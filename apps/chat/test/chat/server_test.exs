@@ -3,25 +3,50 @@ defmodule Chat.ServerTest do
   doctest Chat.Server
 
   test "create chat room and send/get messages" do
-    {:ok, pid} = Chat.Server.start_link()
-    assert Chat.Server.get_messages(pid) == []
-    Chat.Server.add_message(pid, "foo")
-    Chat.Server.add_message(pid, "last message")
+    room_name = "matt's chat"
+    {:ok, _} = Chat.Server.start_link(room_name)
+    assert Chat.Server.get_messages(room_name) == []
+    Chat.Server.add_message(room_name, "foo")
+    Chat.Server.add_message(room_name, "last message")
 
-    assert Chat.Server.get_messages(pid) == ["last message", "foo"]
+    assert Chat.Server.get_messages(room_name) == ["last message", "foo"]
   end
 
   test "create multiple chat rooms" do
-    {:ok, room1} = Chat.Server.start_link()
-    Chat.Server.add_message(room1, "foo")
-    Chat.Server.add_message(room1, "bar")
+    first_room = "first room"
+    {:ok, _} = Chat.Server.start_link(first_room)
+    Chat.Server.add_message(first_room, "foo")
+    Chat.Server.add_message(first_room, "bar")
 
-    {:ok, room2} = Chat.Server.start_link()
-    Chat.Server.add_message(room2, "elixir")
-    Chat.Server.add_message(room2, "is")
-    Chat.Server.add_message(room2, "awesome")
+    second_room = "second room"
+    {:ok, _} = Chat.Server.start_link(second_room)
+    Chat.Server.add_message(second_room, "elixir")
+    Chat.Server.add_message(second_room, "is")
+    Chat.Server.add_message(second_room, "awesome")
 
-    assert Chat.Server.get_messages(room1) == ["bar", "foo"]
-    assert Chat.Server.get_messages(room2) == ["awesome", "is", "elixir"]
+    assert Chat.Server.get_messages(first_room) == ["bar", "foo"]
+    assert Chat.Server.get_messages(second_room) == ["awesome", "is", "elixir"]
+  end
+
+  test "non-crashed chat rooms should keep messages" do
+    first_room = "room1"
+    {:ok, pid} = Chat.Supervisor.add_room(first_room)
+    Chat.Server.add_message(first_room, "message")
+    Chat.Server.add_message(first_room, "training")
+
+    second_room = "room2"
+    Chat.Supervisor.add_room(second_room)
+    Chat.Server.add_message(second_room, "other")
+    Chat.Server.add_message(second_room, "room")
+
+    assert Chat.Server.get_messages(first_room) == ["training", "message"]
+    assert Chat.Server.get_messages(second_room) == ["room", "other"]
+
+    Process.exit(pid, :kill)
+
+    :timer.sleep(10)
+    # First room should reset, second room should remain
+    assert Chat.Server.get_messages(first_room) == []
+    assert Chat.Server.get_messages(second_room) == ["room", "other"]
   end
 end

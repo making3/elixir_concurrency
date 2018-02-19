@@ -5,17 +5,21 @@ defmodule Chat.Server do
   """
   use GenServer
 
-  def start_link() do
+  def start_link(room_name) do
     # Initializes, calling init([])
-    GenServer.start_link(__MODULE__, [], name: :chat_room)
+    GenServer.start_link(__MODULE__, [], name: via_tuple(room_name))
   end
 
-  def add_message(pid, message) do
-    GenServer.cast(pid, {:add_message, message})
+  defp via_tuple(room_name) do
+    {:via, :gproc, {:n, :l, {:chat_room, room_name}}}
   end
 
-  def get_messages(pid) do
-    GenServer.call(pid, :get_messages)
+  def add_message(room_name, message) do
+    GenServer.cast(via_tuple(room_name), {:add_message, message})
+  end
+
+  def get_messages(room_name) do
+    GenServer.call(via_tuple(room_name), :get_messages)
   end
 
   def init(messages) do

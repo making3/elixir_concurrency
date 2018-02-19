@@ -9,7 +9,7 @@ defmodule Chat.Application do
     # List all child processes to be supervised
     children = [
       # Starts a worker by calling: Chat.Worker.start_link(arg)
-      Chat.Supervisor
+      {Chat.Supervisor, name: :chat_supervisor}
       # {Chat.Worker, arg},
     ]
 
