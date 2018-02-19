@@ -13,13 +13,14 @@ defmodule Repeater do
   ## Examples
 
       iex> Repeater.repeat("test!")
-      "test!"
+      "Repeating test!"
 
       iex> Repeater.repeat("more text")
-      "more text"
+      "Repeating more text"
 
   """
   def repeat(text) do
+    text = "Repeating " <> text
     text
   end
 end
