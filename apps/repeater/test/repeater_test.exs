@@ -11,4 +11,8 @@ defmodule RepeaterTest do
     assert Repeater.repeat(text) == "Repeating #{text}"
     assert text == "foo"
   end
+
+  test "number converts to string" do
+    assert Repeater.repeat(123) == "Repeating 123"
+  end
 end
