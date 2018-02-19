@@ -24,6 +24,11 @@ defmodule Repeater do
       iex> Repeater.repeat(0)
       "Repeating zero"
 
+      iex> Repeater.repeat("no-repeat")
+      "Can't repeat"
+
+      iex> Repeater.repeat("repeat")
+      "Only one repeat allowed"
   """
   def repeat(0) do
     repeat("zero")
@@ -36,7 +41,10 @@ defmodule Repeater do
   end
 
   def repeat(text) do
-    text = "Repeating " <> text
-    text
+    case text do
+      "no-repeat" -> "Can't repeat"
+      "repeat" -> "Only one repeat allowed"
+      _ -> "Repeating " <> text
+    end
   end
 end

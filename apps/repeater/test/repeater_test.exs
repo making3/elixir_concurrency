@@ -19,4 +19,12 @@ defmodule RepeaterTest do
   test "0 converts to zero" do
     assert Repeater.repeat(0) == "Repeating zero"
   end
+
+  test "case no-repeat" do
+    assert Repeater.repeat("no-repeat") == "Can't repeat"
+  end
+
+  test "case one repeat" do
+    assert Repeater.repeat("repeat") == "Only one repeat allowed"
+  end
 end
