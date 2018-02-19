@@ -27,4 +27,8 @@ defmodule RepeaterTest do
   test "case one repeat" do
     assert Repeater.repeat("repeat") == "Only one repeat allowed"
   end
+
+  test "cond negative" do
+    assert Repeater.repeat(-7) == "Repeating negative"
+  end
 end

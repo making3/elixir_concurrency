@@ -29,15 +29,23 @@ defmodule Repeater do
 
       iex> Repeater.repeat("repeat")
       "Only one repeat allowed"
+
+      iex> Repeater.repeat(-15)
+      "Repeating negative"
   """
   def repeat(0) do
     repeat("zero")
   end
 
   def repeat(text) when is_integer(text) do
-    text
-    |> Integer.to_string()
-    |> repeat()
+    cond do
+      text < 0 ->
+        repeat("negative")
+      true ->
+        text
+        |> Integer.to_string()
+        |> repeat()
+    end
   end
 
   def repeat(text) do
