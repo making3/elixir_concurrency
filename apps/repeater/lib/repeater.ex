@@ -32,6 +32,12 @@ defmodule Repeater do
 
       iex> Repeater.repeat(-15)
       "Repeating negative"
+
+      iex> Repeater.repeat(%Repeater.Config{text: "example"})
+      "Repeating example"
+
+      iex> Repeater.repeat(%Repeater.Match{})
+      "Repeating struct-match"
   """
   def repeat(0) do
     repeat("zero")
@@ -46,6 +52,14 @@ defmodule Repeater do
         |> Integer.to_string()
         |> repeat()
     end
+  end
+
+  def repeat(%Repeater.Config{text: text_to_repeat}) do
+    repeat(text_to_repeat)
+  end
+
+  def repeat(%Repeater.Match{} = config) do
+    repeat(config.text)
   end
 
   def repeat(text) do

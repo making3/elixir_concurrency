@@ -31,4 +31,12 @@ defmodule RepeaterTest do
   test "cond negative" do
     assert Repeater.repeat(-7) == "Repeating negative"
   end
+
+  test "struct matching property" do
+    assert Repeater.repeat(%Repeater.Config{text: "random"}) == "Repeating random"
+  end
+
+  test "struct matching" do
+    assert Repeater.repeat(%Repeater.Match{}) == "Repeating struct-match"
+  end
 end
