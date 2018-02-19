@@ -1,18 +1,25 @@
 defmodule Repeater do
   @moduledoc """
-  Documentation for Repeater.
+  Contains functions for repeating things
   """
 
   @doc """
-  Hello world.
+  Repeats text
+
+  ## Parameters
+
+    - text: Text to repeat
 
   ## Examples
 
-      iex> Repeater.hello
-      :world
+      iex> Repeater.repeat("test!")
+      "test!"
+
+      iex> Repeater.repeat("more text")
+      "more text"
 
   """
-  def hello do
-    :world
+  def repeat(text) do
+    text
   end
 end

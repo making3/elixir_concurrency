@@ -2,7 +2,7 @@ defmodule RepeaterTest do
   use ExUnit.Case
   doctest Repeater
 
-  test "greets the world" do
-    assert Repeater.hello() == :world
+  test "repeats text" do
+    assert Repeater.repeat("test123") == "test123"
   end
 end
