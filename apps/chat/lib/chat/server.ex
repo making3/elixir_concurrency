@@ -7,7 +7,7 @@ defmodule Chat.Server do
 
   def start_link() do
     # Initializes, calling init([])
-    GenServer.start_link(__MODULE__, [])
+    GenServer.start_link(__MODULE__, [], name: :chat_room)
   end
 
   def add_message(pid, message) do
